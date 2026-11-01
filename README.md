@@ -1,11 +1,6 @@
 # Access Log Analyzer
-## Video Demo
-
-https://youtu.be/pDh2Dz8z_9Q
-
-
 ## Description
-Access Log Analyzer is a tool that reads a web server access logs in the Apache format and prints a short, readable report. A busy web server writes one line to its log for every request, which quickly adds up to thousands of lines that nobody can read by eye. This command-line tool, written in Python, summarizes how many requests were made, how many of them failed, which status codes were returned, which IP addresses were the busiest and which IPs produced an unusually high number of errors.
+Access Log Analyzer is a tool that I created for my Final Project for the CS50P course. Its a tool that reads web server access logs, in the Apache format, and prints a short, readable report. A busy web server writes one line to its log for every request, which quickly adds up to thousands of lines that nobody can read by eye. This command-line tool, written in Python, summarizes how many requests were made, how many of them failed, which status codes were returned, which IP addresses were the busiest and which IPs produced an unusually high number of errors.
 
 Given my interest in cybersecuriy and DevOps, I've decided to create a tool to parse logs, since reading logs is a daily task. I wanted to build something that I can reuse later and I plan to extend it with other log formats, implement a system health checker and a security audit tool, on top of that. A parser for authentication logs to detect failed SSH logins, would also be a neat idea.
 
@@ -19,6 +14,9 @@ The report contains five parts:
  - Top suspicious IPs (ones with the most error codes).
 
 If no argument (or too many) is given, the program prints a usage message and exits. If the log file does not exist, or contains no valid log lines, it exits with a clear error message.
+
+<img width="848" height="290" alt="bad use analyzer" src="https://github.com/user-attachments/assets/5ef33403-8cd8-44f7-b0b6-de2a21ed4893" />
+
 
 ## Files
 - `project.py` contains the whole program. It has a compiled regular expression `PATTERN`, a `THRESHOLD` constant and the following functions:
@@ -58,8 +56,12 @@ pytest test_project.py
 ```
 As previously mentioned, you can find further explanation for each test in the comments of the `test_project.py` file.
 
+<img width="1584" height="344" alt="pytest analyzer" src="https://github.com/user-attachments/assets/98e22888-7175-43b0-a3e9-43e87b52cb5a" />
+
+
 ## Usage Example
 To run the tool, simply run the python script, followed by the log file you want to parse, as an argument. For example, lets suppose I want to analyze a "file.log" log file:
 ```
-python project.py file.log
+python3 project.py file.log
 ```
+<img width="840" height="626" alt="log analyzer use" src="https://github.com/user-attachments/assets/b494bb64-7b9a-4000-8117-eb790b79ff9d" />
