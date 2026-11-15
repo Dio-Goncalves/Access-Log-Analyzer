@@ -63,3 +63,43 @@ To run the tool, simply run the python script, followed by the log file you want
 ```
 python project.py file.log
 ```
+
+## Running with Docker
+The tool can also run inside a Docker container, so you don't need Python installed on your machine.
+
+### Docker design choices
+- **Multi-stage build:** tests run in a first stage, so a failing test stops the build. Pytest is not included in the final image;
+- **Slim base image:** `python:3.12-slim` keeps the image small. The program only uses the standard library, so no dependencies are installed;
+- **Non-root user:** the container runs as an unprivileged user, as a basic security practice;
+- **Logs mounted at runtime:** log files are not copied into the image. Instead, a folder from the host is mounted into the container when it runs (`-v`). This means one image can analyze any log file, and no log data is ever stored in the image, which matters if you publish it to a registry.
+
+### Requirements
+- Install Docker Engine - [installation guide](https://docs.docker.com/engine/install/)
+
+### Build the image
+From the project folder run:
+```
+docker build -t log-analyzer .
+```
+
+The Dockerfile uses a multi-stage build. The first stage installs pytest and runs the test suite, so the build fails if any test fails. The final image contains only `project.py` and runs as a non-root user.
+
+### Run the analyzer
+Mount the folder with your logs into the container and pass the file path as an argument:
+```
+docker run --rm -v "$(pwd):/data:ro" log-analyzer /data/<your_file>.log
+```
+
+- `--rm` removes the container after it finishes executing. The image you've previously built with the `docker build` command will still be there, so you can use `docker run` again at any time to create another container;
+- `-v "$(pwd):/data:ro"` mounts the current folder into the container at `/data`, read-only (:ro);
+- `/data/<your_file>.log` is the log file, as the container sees it.
+
+To analyze a log from the dummy sample data folder instead:
+```
+docker run --rm -v "$(pwd)/dummy sample data:/data:ro" log-analyzer /data/<file-name>.log
+```
+
+### Run only the tests
+```
+docker build --target test -t log-analyzer-test .
+```
