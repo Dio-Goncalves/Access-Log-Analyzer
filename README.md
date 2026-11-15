@@ -83,6 +83,7 @@ From the project folder run:
 ```
 docker build -t log-analyzer .
 ```
+<img width="1578" height="484" alt="log-analyzer docker build" src="https://github.com/user-attachments/assets/0362e247-8d92-449e-b5c4-a0c53debc891" />
 
 The Dockerfile uses a multi-stage build. The first stage installs pytest and runs the test suite, so the build fails if any test fails. The final image contains only `project.py` and runs as a non-root user.
 
@@ -100,6 +101,8 @@ To analyze a log from the dummy sample data folder instead:
 ```
 docker run --rm -v "$(pwd)/dummy sample data:/data:ro" log-analyzer /data/<file-name>.log
 ```
+Example with the `sus_log.log` file in the `dummy sample data` directory:
+<img width="1128" height="400" alt="log-analyzer docker" src="https://github.com/user-attachments/assets/3f424ca2-b33d-4d9c-99a6-20141d27dff6" />
 
 ### Run only the tests
 ```
